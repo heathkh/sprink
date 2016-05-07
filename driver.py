@@ -48,7 +48,7 @@ if GPIO:
             
             # need pump on if any zones are on
             need_pump = False
-            for pin in self._zone_to_pin.iterkeys():
+            for pin in self._zone_to_pin.itervalues():
                 if GPIO.input(pin) == 0: # pin off -> zone on
                     need_pump = True
                     break
