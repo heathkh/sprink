@@ -1,0 +1,17 @@
+---
+
+- name: update from git
+  git: repo=ssh://git@github.com/heathkh/sprink.git dest=/home/pi/git/sprink
+
+- name: install supervisord
+  become: yes
+  apt: pkg=supervisor
+
+- name: Install supervisord conf for sprink
+  become: yes
+  copy: src=sprink.conf dest=/etc/supervisor/conf.d/ mode=0644 
+  
+- name: Restart service
+  become: yes
+  supervisorctl: name='sprink:' state=restarted
+  
