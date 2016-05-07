@@ -1,4 +1,9 @@
 #!/usr/bin/python
+"""
+
+TODO: add reporting to cloudwatch so we can monitor and alert on missed watering
+"""
+
 import time
 import driver
 import time
@@ -24,29 +29,22 @@ class ActiveInterval(object):
     def __init__(self, on_time, off_time):
         if off_time < on_time:
             raise RuntimeError('off time must be after on time')
-
         self.on_time = on_time
         self.off_time = off_time
         return
     
     def is_active(self):
         now = datetime.datetime.now().time()
-
-        print now
-        
         is_active = False
         if now > self.on_time and now <  self.off_time:
             is_active = True
-        
         return is_active
         
-
-
+        
 class SimpleScheduler(object):
     def __init__(self):
         self._driver = driver.get_driver()
         self._zone_intervals = {}
-        
         return
     
     def add(self, zone, on_time, off_time):
@@ -56,10 +54,7 @@ class SimpleScheduler(object):
         if zone not in self._zone_intervals:
             self._zone_intervals[zone] = []
         self._zone_intervals[zone].append(interval)
-    
         return
-        
-        
     
     def run(self):
         signals = SignalHandler()
@@ -75,26 +70,18 @@ class SimpleScheduler(object):
                         is_active = True
                         break
                 self._driver.set_zone(zone, is_active)
-            
             time.sleep(1)
         return
             
 
 def main():
-    
     scheduler = SimpleScheduler()
-    
-    offset = datetime.datetime.now()
-
-    for i in range(10):
-        offset = offset + datetime.timedelta(seconds=5)
-        start = offset
-        end = start + datetime.timedelta(seconds=2)
-        scheduler.add(1, start.time(), end.time())
-        
-    
-    
+    scheduler.add(1, datetime.time(10,0), datetime.time(10,5))
+    scheduler.add(2, datetime.time(10,5), datetime.time(10,10))
+    scheduler.add(3, datetime.time(10,10), datetime.time(10,15))
     scheduler.run()
+    
+    
     return
             
 if __name__ == '__main__':
