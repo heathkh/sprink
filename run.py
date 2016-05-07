@@ -4,6 +4,21 @@ import driver
 import time
 import datetime
 
+import signal
+import time
+import sys
+
+class SignalHandler:
+  exit_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+    return
+
+  def exit_gracefully(self,signum, frame):
+    self.exit_now = True
+    return
+
 
 class ActiveInterval(object):
     def __init__(self, on_time, off_time):
@@ -31,6 +46,7 @@ class SimpleScheduler(object):
     def __init__(self):
         self._driver = driver.get_driver()
         self._zone_intervals = {}
+        
         return
     
     def add(self, zone, on_time, off_time):
@@ -46,9 +62,12 @@ class SimpleScheduler(object):
         
     
     def run(self):
-        
+        signals = SignalHandler()
         while True:
             print 'Checking...'
+            if signals.exit_now:
+                print 'Exiting from signal...'
+                break
             for zone, intervals in self._zone_intervals.iteritems():
                 is_active = False
                 for interval in intervals:
@@ -58,6 +77,7 @@ class SimpleScheduler(object):
                 self._driver.set_zone(zone, is_active)
             
             time.sleep(1)
+        return
             
 
 def main():
@@ -65,11 +85,13 @@ def main():
     scheduler = SimpleScheduler()
     
     offset = datetime.datetime.now()
+
     for i in range(10):
-        offset = offset + datetime.timedelta(seconds=10)
+        offset = offset + datetime.timedelta(seconds=5)
         start = offset
-        end = start + datetime.timedelta(seconds=5)
+        end = start + datetime.timedelta(seconds=2)
         scheduler.add(1, start.time(), end.time())
+        
     
     
     scheduler.run()

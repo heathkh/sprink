@@ -2,6 +2,8 @@
 import time
 import atexit
 
+
+
 try:
     import RPi.GPIO as GPIO
 except RuntimeError:
@@ -16,9 +18,10 @@ if GPIO:
     	# turn all channels "on" -> all relays off
         sprink = SprinklerDriver()
         sprink._all_off()
+        print 'CLEANUP CALLED!'
         return
     
-    atexit.register(cleanup)
+
      
     class SprinklerDriver(object):
         def __init__(self):
@@ -66,11 +69,17 @@ class MockSprinklerDriver(object):
         print 'Setting zone %s to state %s' % (zone_num, zone_state)
         return
 
+def mock_cleanup():
+        print 'CLEANUP CALLED!'
+        return
+   
 
 def get_driver():
     if GPIO:
+        atexit.register(cleanup)
         return SprinklerDriver()
     else:
+        atexit.register(mock_cleanup)
         return MockSprinklerDriver()
             
         
