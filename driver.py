@@ -2,6 +2,7 @@
 import time
 import atexit
 
+from boto.ec2 import cloudwatch 
 
 
 try:
@@ -38,6 +39,7 @@ if GPIO:
             self._all_pins.append(self._pin_pump)
             # relay board uses reversed logic (high = off)
             GPIO.setup(self._all_pins, GPIO.OUT, initial=1) 
+            self._cloudwatch = cloudwatch.connect_to_region('us-west-2')
             return
         
         def _all_off(self):
@@ -51,14 +53,21 @@ if GPIO:
             
             # need pump on if any zones are on
             need_pump = False
-            for pin in self._zone_to_pin.itervalues():
+            for zone, pin in self._zone_to_pin.iteritems():
+                zone_state_value = 0
                 if GPIO.input(pin) == 0: # pin off -> zone on
                     need_pump = True
-                    break
+                    zone_state_value = 1
+                write_name = "test.zone.state"
+                tags = {'zone_id': [zone]}
+                self._cloudwatch.put_metric_data(namespace="sprink",
+                                                 name=write_name,
+                                                 unit="None",
+                                                 dimensions=tags,
+                                                 value=zone_state_value)
             
             
             GPIO.output(self._pin_pump, not need_pump)
-            
             return
 
 class MockSprinklerDriver(object):

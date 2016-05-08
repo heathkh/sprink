@@ -3,6 +3,13 @@
 - name: update from git
   git: repo=ssh://git@github.com/heathkh/sprink.git dest=/home/pi/git/sprink
 
+- name: install pip deps
+  become: yes
+  pip: name={{item}}
+  with_items:
+    - boto
+    - awscli
+
 - name: install supervisord
   become: yes
   apt: pkg=supervisor
