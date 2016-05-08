@@ -89,11 +89,11 @@ def schedule_cycle(scheduler, start_time, duration, zones = [1,2,3]):
 
 def main():
     scheduler = SimpleScheduler()
-    schedule_cycle(scheduler, datetime.time(18,50), datetime.timedelta(minutes=5))
+    
+    schedule_cycle(scheduler, datetime.time(8,00), datetime.timedelta(minutes=5))
+    schedule_cycle(scheduler, datetime.time(13,00), datetime.timedelta(minutes=5))
     
     scheduler.run()
-    
-    
     return
             
 if __name__ == '__main__':
