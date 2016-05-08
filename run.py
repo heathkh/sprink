@@ -8,7 +8,6 @@ import time
 import driver
 import time
 import datetime
-
 import signal
 import time
 import sys
@@ -59,7 +58,7 @@ class SimpleScheduler(object):
     def run(self):
         signals = SignalHandler()
         while True:
-            print 'Checking...'
+            print '%s : Updating' % (datetime.datetime.now())
             if signals.exit_now:
                 print 'Exiting from signal...'
                 break
@@ -70,8 +69,10 @@ class SimpleScheduler(object):
                         is_active = True
                         break
                 self._driver.set_zone(zone, is_active)
-            time.sleep(1)
+            time.sleep(60)
         return
+    
+    
             
 
 def schedule_cycle(scheduler, start_time, duration, zones = [1,2,3]):
