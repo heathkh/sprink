@@ -79,6 +79,13 @@ def main():
     scheduler.add(1, datetime.time(10,0), datetime.time(10,5))
     scheduler.add(2, datetime.time(10,5), datetime.time(10,10))
     scheduler.add(3, datetime.time(10,10), datetime.time(10,15))
+    
+    scheduler.add(1, datetime.time(18,00), datetime.time(18,5))
+    scheduler.add(2, datetime.time(18,5), datetime.time(18,10))
+    scheduler.add(3, datetime.time(18,10), datetime.time(18,15))
+    
+    
+    
     scheduler.run()
     
     
