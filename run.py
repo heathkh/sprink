@@ -74,17 +74,21 @@ class SimpleScheduler(object):
         return
             
 
+def schedule_cycle(scheduler, start_time, duration, zones = [1,2,3]):
+    # Need to convert from time to datetime so we can do arthmetic with timedelta, then convert back to time object
+    phase_start_time = datetime.datetime.combine(datetime.date.today(), start_time)
+    for zone in zones:
+        phase_end_time = phase_start_time + duration
+        scheduler.add(zone, phase_start_time.time(), phase_end_time.time())
+        phase_start_time += duration
+    return
+        
+    
+    
+
 def main():
     scheduler = SimpleScheduler()
-    scheduler.add(1, datetime.time(10,0), datetime.time(10,5))
-    scheduler.add(2, datetime.time(10,5), datetime.time(10,10))
-    scheduler.add(3, datetime.time(10,10), datetime.time(10,15))
-    
-    scheduler.add(1, datetime.time(18,00), datetime.time(18,5))
-    scheduler.add(2, datetime.time(18,5), datetime.time(18,10))
-    scheduler.add(3, datetime.time(18,10), datetime.time(18,15))
-    
-    
+    schedule_cycle(scheduler, datetime.time(18,50), datetime.timedelta(minutes=5))
     
     scheduler.run()
     
