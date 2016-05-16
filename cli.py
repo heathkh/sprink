@@ -1,8 +1,6 @@
 
 import sys
 import gflags
-from common import log
-
 def init():
     """ Call this first thing in main to parse flags and configure logging. 
     
@@ -21,5 +19,4 @@ def init():
         print '%s\nUsage: %s ARGS\n%s' % (e, sys.argv[0], gflags.FLAGS.MainModuleHelp())
         sys.exit(1)
     
-    log.init() # GFLAGS just parsed, so ask logging to init using updated flags
     return positional_args
