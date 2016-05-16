@@ -7,6 +7,7 @@ FLAGS = gflags.FLAGS
 gflags.DEFINE_integer('zone', None, 'ID of the zone')
 gflags.DEFINE_boolean('on', True, 'Desired state of the zone')
 
+gflags.MarkFlagAsRequired(zone, [1,2,3])
 
 def main():
     cli.init()
