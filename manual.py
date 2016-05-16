@@ -12,11 +12,9 @@ gflags.MarkFlagAsRequired('zone')
 def main():
     cli.init()
     driver.set_zone(FLAGS.zone, FLAGS.on)
-    
     print driver.get_zone_states()
-    
     return
 
     
-if __file__ == "__main__":
+if __name__ == "__main__":
     main()
