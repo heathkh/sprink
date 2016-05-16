@@ -1,6 +1,7 @@
 
 import sys
 import gflags
+
 def init():
     """ Call this first thing in main to parse flags and configure logging. 
     
