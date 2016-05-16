@@ -5,7 +5,7 @@ import sys
 
 FLAGS = gflags.FLAGS
 gflags.DEFINE_integer('zone', None, 'ID of the zone')
-gflags.DEFINE_boolean('state', True, 'Desired state of the zone')
+gflags.DEFINE_boolean('state', None, 'Desired state of the zone')
 
 gflags.MarkFlagAsRequired('zone')
 
