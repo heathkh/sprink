@@ -9,6 +9,7 @@
   with_items:
     - boto
     - awscli
+    - python-gflags
 
 - name: install supervisord
   become: yes
