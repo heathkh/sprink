@@ -57,6 +57,7 @@ if GPIO:
             return zone_to_state
 
         def set_zone(self, zone_num, zone_state):
+            print 'Zone: %s %s' % (zone_num, zone_state)
             pin = self._zone_to_pin[zone_num]
             GPIO.output(pin, not zone_state) # note pin on -> zone off 
             
