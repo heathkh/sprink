@@ -46,6 +46,16 @@ if GPIO:
             GPIO.output(self._all_pins, 1)
             return
     
+    
+        def get_zone_states(self):
+            zone_to_state = {}
+            for zone, pin in self._zone_to_pin.iteritems():
+                zone_state_value = 0
+                if GPIO.input(pin) == 0: # pin off -> zone on
+                    zone_state_value = 1
+                
+                zone_to_state[zone] = zone_state_value
+            return zone
 
         def set_zone(self, zone_num, zone_state):
             pin = self._zone_to_pin[zone_num]
