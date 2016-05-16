@@ -11,6 +11,11 @@ gflags.MarkFlagAsRequired('zone')
 
 def main():
     cli.init()
+    
+    print FLAGS.state
+    
+    exit(0)
+    
     sprink = driver.SprinklerDriver()
     sprink.set_zone(FLAGS.zone, FLAGS.state)
     print sprink.get_zone_states()
